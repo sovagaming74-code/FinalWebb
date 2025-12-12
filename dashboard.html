@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoalGetter - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <style>
+        /* Specific Grid Override for 7 Days + 18 Time Slots */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(7, 1fr); /* Time col + 7 days */
+            grid-template-rows: auto repeat(18, 60px); /* Header + 18 hours (6am-12am) */
+            gap: 5px;
+            overflow-y: auto;
+            max-height: 70vh; /* Limits height so it scrolls within the card */
+        }
+        .day-header {
+            position: sticky;
+            top: 0;
+            background: #1c1c3e;
+            z-index: 10;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .time-col {
+            border-right: 1px solid var(--glass-border);
+        }
+
+        /* STREAK ANIMATION */
+        .streak-count {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .streak-up { transform: scale(1.3); color: #a8ff78; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2 id="logo-text">GoalGetter</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#scheduler"><i class="fa-solid fa-calendar-check"></i> Smart Schedule</a></li>
+                <li><a href="#tracker"><i class="fa-solid fa-fire"></i> Habit Tracker</a></li>
+                <li><a href="#progress"><i class="fa-solid fa-chart-pie"></i> Your Progress</a></li>
+                <li><a href="#categories"><i class="fa-solid fa-layer-group"></i> Categories</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="services.html" class="glass-btn" style="width: 100%; color: #000; justify-content: center;">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Services
+                </a>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            
+            <section id="scheduler" class="view">
+                <div class="header-flex">
+                    <h1>Smart Schedule</h1>
+                    <button class="glass-btn" id="open-goal-modal">+ New Goal</button>
+                </div>
+                <div class="glass-card">
+                    <div class="calendar-grid" id="calendar-grid">
+                        <div class="time-label-placeholder"></div>
+                        <div class="day-header">Mon</div>
+                        <div class="day-header">Tue</div>
+                        <div class="day-header">Wed</div>
+                        <div class="day-header">Thu</div>
+                        <div class="day-header">Fri</div>
+                        <div class="day-header">Sat</div>
+                        <div class="day-header">Sun</div>
+
+                        <div class="time-col">6 AM</div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
+                        <div class="time-col">7 AM</div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
+                        <div class="time-col">8 AM</div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
+                        <div class="time-col">9 AM</div><div class="slot busy">Meeting</div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
+                        <div class="time-col">10 AM</div><div class="slot smart-suggest">⚡ Study</div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
+                        </div>
+                </div>
+            </section>
+
+            <section id="tracker" class="view hidden">
+                <div class="header-flex">
+                    <h1>Habit Tracking</h1>
+                    <button class="glass-btn" id="add-habit-btn">+ New Habit</button>
+                </div>
+                <div class="habit-list" id="habit-list-container">
+                    <div class="glass-card habit-item">
+                        <div class="habit-info">
+                            <h3>Read 30 Mins</h3>
+                            <p>Streak: 🔥 <span class="streak-count">3</span> Days</p>
+                        </div>
+                        <div class="habit-days">
+                            <span class="dot done">M</span><span class="dot done">T</span><span class="dot done">W</span><span class="dot">T</span><span class="dot">F</span><span class="dot">S</span><span class="dot">S</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="progress" class="view hidden">
+                <h1>Your Progress</h1>
+                <div class="stats-grid">
+                    <div class="glass-card stat-box">
+                        <h3>Completion Rate</h3>
+                        <div class="circle-progress">85%</div>
+                    </div>
+                    <div class="glass-card stat-box">
+                        <h3>Goals Hit</h3>
+                        <p class="big-number">24</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="categories" class="view hidden">
+                <h1>Categories</h1>
+                <div class="category-grid">
+                    <div class="glass-card cat-card school"><h3>School</h3><i class="fa-solid fa-book"></i></div>
+                    <div class="glass-card cat-card work"><h3>Work</h3><i class="fa-solid fa-briefcase"></i></div>
+                    <div class="glass-card cat-card health"><h3>Health</h3><i class="fa-solid fa-heart-pulse"></i></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="habit-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-card">
+            <span class="close-btn" id="close-habit-modal">&times;</span>
+            <h2>Create New Habit</h2>
+            <form id="new-habit-form">
+                <div class="input-group">
+                    <label>Habit Name:</label>
+                    <input type="text" id="habit-name-input" placeholder="e.g. Gym" required>
+                </div>
+                <button type="submit" class="modal__btn">Start Habit</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="goal-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-card">
+            <span class="close-btn" id="close-goal-modal">&times;</span>
+            <h2>Schedule New Goal</h2>
+            <form id="new-goal-form">
+                <div class="input-group">
+                    <label>Goal Name:</label>
+                    <input type="text" id="goal-name-input" placeholder="e.g. Homework" required>
+                </div>
+                <div class="input-group">
+                    <label>Day:</label>
+                    <select id="goal-col-input">
+                        <option value="2">Monday</option><option value="3">Tuesday</option><option value="4">Wednesday</option>
+                        <option value="5">Thursday</option><option value="6">Friday</option><option value="7">Saturday</option><option value="8">Sunday</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Time Start:</label>
+                    <select id="goal-row-input">
+                        <option value="2">6 AM</option><option value="3">7 AM</option><option value="4">8 AM</option><option value="5">9 AM</option><option value="6">10 AM</option>
+                        <option value="7">11 AM</option><option value="8">12 PM</option><option value="9">1 PM</option><option value="10">2 PM</option><option value="11">3 PM</option>
+                        <option value="12">4 PM</option><option value="13">5 PM</option><option value="14">6 PM</option><option value="15">7 PM</option><option value="16">8 PM</option>
+                        <option value="17">9 PM</option><option value="18">10 PM</option><option value="19">11 PM</option>
+                    </select>
+                </div>
+                <button type="submit" class="modal__btn">Add to Schedule</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // NAVIGATION
+        function handleViewChange() {
+            const hash = window.location.hash || '#scheduler';
+            document.querySelectorAll('.view').forEach(v => v.classList.toggle('hidden', '#' + v.id !== hash));
+            document.querySelectorAll('.nav-links li').forEach(li => {
+                const a = li.querySelector('a');
+                if (a) li.classList.toggle('active', a.getAttribute('href') === hash);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            handleViewChange();
+            window.addEventListener('hashchange', handleViewChange);
+
+            // AUTO-FILL REMAINING SCHEDULE ROWS (11 AM to 11 PM)
+            const grid = document.getElementById('calendar-grid');
+            const hours = ["11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"];
+            hours.forEach(h => {
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'time-col';
+                timeDiv.textContent = h;
+                grid.appendChild(timeDiv);
+                for(let i=0; i<7; i++) {
+                    const slot = document.createElement('div');
+                    slot.className = 'slot';
+                    grid.appendChild(slot);
+                }
+            });
+
+            // STREAK LOGIC: Clicking dots updates the streak count
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('dot')) {
+                    const dot = e.target;
+                    const habitCard = dot.closest('.habit-item');
+                    
+                    // Toggle status
+                    dot.classList.toggle('done');
+
+                    // Calculate new streak
+                    const streakDisplay = habitCard.querySelector('.streak-count');
+                    const totalDone = habitCard.querySelectorAll('.dot.done').length;
+                    
+                    // Update Text & Animation
+                    streakDisplay.textContent = totalDone;
+                    streakDisplay.classList.add('streak-up');
+                    setTimeout(() => streakDisplay.classList.remove('streak-up'), 300);
+                }
+            });
+
+            // GOAL MODAL
+            const goalModal = document.getElementById('goal-modal');
+            document.getElementById('open-goal-modal').onclick = () => goalModal.classList.remove('hidden');
+            document.getElementById('close-goal-modal').onclick = () => goalModal.classList.add('hidden');
+            document.getElementById('new-goal-form').onsubmit = (e) => {
+                e.preventDefault();
+                const name = document.getElementById('goal-name-input').value;
+                const col = document.getElementById('goal-col-input').value;
+                const row = document.getElementById('goal-row-input').value;
+                const html = `<div class="slot smart-suggest" style="grid-column: ${col}; grid-row: ${row};">⚡ ${name}</div>`;
+                grid.insertAdjacentHTML('beforeend', html);
+                goalModal.classList.add('hidden');
+            };
+
+            // HABIT MODAL
+            const habitModal = document.getElementById('habit-modal');
+            document.getElementById('add-habit-btn').onclick = () => habitModal.classList.remove('hidden');
+            document.getElementById('close-habit-modal').onclick = () => habitModal.classList.add('hidden');
+            document.getElementById('new-habit-form').onsubmit = (e) => {
+                e.preventDefault();
+                const name = document.getElementById('habit-name-input').value;
+                const html = `
+                    <div class="glass-card habit-item">
+                        <div class="habit-info"><h3>${name}</h3><p>Streak: 🔥 <span class="streak-count">0</span> Days</p></div>
+                        <div class="habit-days">
+                            <span class="dot">M</span><span class="dot">T</span><span class="dot">W</span><span class="dot">T</span><span class="dot">F</span><span class="dot">S</span><span class="dot">S</span>
+                        </div>
+                    </div>`;
+                document.getElementById('habit-list-container').insertAdjacentHTML('beforeend', html);
+                habitModal.classList.add('hidden');
+            };
+        });
+    </script>
+</body>
+</html>
